@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,17 +12,15 @@ namespace BankaOtomasyon.DataAccessLayer
    public class HesapIslemleri
     {
         DBHelper dbhelper;
-        Hesaplar hesap;
         public HesapIslemleri()
         {
             dbhelper = new DBHelper();
-            hesap = new Hesaplar();
         }
-        public void HesapEkle()
+        public void HesapEkle(Hesaplar hesap)
         {
             SqlCommand cmd = dbhelper.GetSqlCommand();
-            cmd.CommandText = "INSERT INTO (HesapNo,HesapSahibi,HesapIBAN,HesapSKT,HesapBakiye,HesapSifre,HesapCVV,HesapDetay)"
-                + "TBL_HESAPLAR VALUES (@p1,@p2,@p3,@p4,@p5,@p6,qp7,@p8)";
+            cmd.CommandText = "INSERT INTO TBL_HESAPLAR(HesapNo,HesapSahibi,HesapIBAN,HesapSKT,HesapBakiye,HesapSifre,HesapCVV,HesapDetay)"
+                + "VALUES (@p1,@p2,@p3,@p4,@p5,@p6,@p7,@p8)";
             cmd.Parameters.AddWithValue("@p1", hesap.HesapNo);
             cmd.Parameters.AddWithValue("@p2", hesap.HesapSahibi);
             cmd.Parameters.AddWithValue("@p3", hesap.HesapIBAN);
@@ -33,14 +31,14 @@ namespace BankaOtomasyon.DataAccessLayer
             cmd.Parameters.AddWithValue("@p8", hesap.HesapDetay);
             cmd.ExecuteNonQuery();
         }
-        public void HesapSil()
+        public void HesapSil(Hesaplar hesap)
         {
             SqlCommand cmd = dbhelper.GetSqlCommand();
             cmd.CommandText = "DELETE FROM TBL_HESAPLAR WHERE HesapNo = @p1";
             cmd.Parameters.AddWithValue("@p1", hesap.HesapNo);
             cmd.ExecuteNonQuery();
         }
-        public void HesapGuncelle()
+        public void HesapGuncelle(Hesaplar hesap)
         {
             SqlCommand cmd = dbhelper.GetSqlCommand();
             cmd.CommandText = "UPDATE TBL_HESAPLAR SET HesapNo = @p1,HesapSahibi = @p2,HesapIBAN = @p3,HesapSKT = @p4,HesapBakiye = @p5,"
@@ -58,7 +56,7 @@ namespace BankaOtomasyon.DataAccessLayer
         }
         public DataTable HesapGetir()
         {
-
+            Hesaplar hesap = new Hesaplar();
             SqlCommand cmd = dbhelper.GetSqlCommand();
             cmd.CommandText = "SELECT * FROM TBL_HESAPLAR ";
             cmd.ExecuteNonQuery();
