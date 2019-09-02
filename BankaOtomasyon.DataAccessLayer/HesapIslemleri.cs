@@ -78,5 +78,29 @@ namespace BankaOtomasyon.DataAccessLayer
             }
             return dt;
         }
+        public Hesaplar IDHesapGetir(Hesaplar hesap)
+        {
+            SqlCommand cmd = dbhelper.GetSqlCommand();
+            cmd.CommandText = "SELECT * FROM TBL_HESAPLAR WHERE HesapID = @p1";
+            cmd.Parameters.AddWithValue("@p1", hesap.HesapID);
+            cmd.ExecuteNonQuery();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            if (dt.Rows.Count != 0)
+            {
+                hesap.HesapID = dt.Rows[0].Field<int>("HesapID");
+                hesap.HesapNo = dt.Rows[0].Field<string>("HesapNo").ToString();
+                hesap.HesapSahibi = dt.Rows[0].Field<string>("HesapSahibi").ToString();
+                hesap.HesapIBAN = dt.Rows[0].Field<string>("HesapIBAN").ToString();
+                hesap.HesapSKT = dt.Rows[0].Field<string>("HesapSKT").ToString();
+                hesap.HesapBakiye = dt.Rows[0].Field<decimal>("HesapBakiye");
+                hesap.HesapSifre = dt.Rows[0].Field<int>("HesapSifre");
+                hesap.HesapCVV = dt.Rows[0].Field<int>("HesapCVV");
+                hesap.HesapDetay = dt.Rows[0].Field<string>("HesapDetay").ToString();
+
+            }
+            return hesap;
+        }
     }
 }
